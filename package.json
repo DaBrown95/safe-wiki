@@ -1,0 +1,23 @@
+{
+  "name": "safe-wiki",
+  "version": "1.0.0",
+  "description": "An electron powered app that adapts kiwix to use the SAFE network for retrieval of zim files.",
+  "main": "main.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "electron ."
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/DaBrown95/safe-wiki.git"
+  },
+  "author": "David Brown <david_a_brown@mac.com>",
+  "license": "GPL-3.0",
+  "bugs": {
+    "url": "https://github.com/DaBrown95/safe-wiki/issues"
+  },
+  "homepage": "https://github.com/DaBrown95/safe-wiki#readme",
+  "devDependencies": {
+    "electron": "1.7.9"
+  }
+}
