@@ -2,7 +2,7 @@
   "name": "safe-wiki",
   "version": "1.0.0",
   "description": "An electron powered app that adapts kiwix to use the SAFE network for retrieval of zim files.",
-  "main": "main.js",
+  "main": "js/main.js",
   "scripts": {
     "test": "standard",
     "start": "electron ."
