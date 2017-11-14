@@ -34,10 +34,10 @@
 
   -->
 
-  <link rel="stylesheet" href="css/app.css"/>
+  <link rel="stylesheet" href="../css/app.css"/>
   <!-- Bootstrap -->
-  <link href="css/bootstrap.css" rel="stylesheet" media="screen"/>
-  <link href="css/bootstrap-theme.css" rel="stylesheet" media="screen"/>
+  <link href="../css/bootstrap.css" rel="stylesheet" media="screen"/>
+  <link href="../css/bootstrap-theme.css" rel="stylesheet" media="screen"/>
 </head>
 <body role="application">
 <section id="search-article" role="region">
@@ -83,7 +83,7 @@
                         </span>
         </div>
         <div id="searchingForArticles" class="floating" style="display: none;">
-          <img src="img/spinner.gif" alt="Please wait..." />
+          <img src="../img/spinner.gif" alt="Please wait..." />
         </div>
       </form>
     </div>
@@ -91,7 +91,7 @@
   <article class="view-content">
     <div id="about" style="display: none;" class="category-padding">
       <h2>
-        <img src="img/icons/kiwix-60.png" alt="Kiwix icon"/>
+        <img src="../img/icons/kiwix-60.png" alt="Kiwix icon"/>
         Kiwix : offline Wikipedia viewer
       </h2>
       <br />Official site : <a href="http://www.kiwix.org/" target="_blank">http://www.kiwix.org/</a>
@@ -197,7 +197,7 @@
         <strong>Only Wikimedia contents (wiki*.zim* files) have been tested</strong> for now. There are known bugs on other contents, and audio/video/dynamic contents are not supported for now.<br />
       </div>
       <div id="scanningForArchives" style="display: none;">
-        <br /> Scanning for archives... Please wait <img src="img/spinner.gif" alt="Please wait..." />
+        <br /> Scanning for archives... Please wait <img src="../img/spinner.gif" alt="Please wait..." />
       </div>
       <div id="chooseArchiveFromLocalStorage" style="display: none;">
         <br /> Please select the archive you want to use : <select id="archiveList" class="form-control"></select>
@@ -229,9 +229,9 @@
       </div>
     </div>
     <div id="readingArticle" style="display: none;" class="container">
-      Reading article <span id="articleName"></span> from archive... Please wait <img src="img/spinner.gif" alt="Please wait..." />
+      Reading article <span id="articleName"></span> from archive... Please wait <img src="../img/spinner.gif" alt="Please wait..." />
     </div>
-    <iframe id="articleContent" src="A/dummyArticle.html" class="articleIFrame">&nbsp;</iframe>
+    <iframe id="articleContent" src="dummyArticle.html" class="articleIFrame">&nbsp;</iframe>
   </article>
   <footer>
     <div id="navigationButtons" class="btn-toolbar">
@@ -255,7 +255,7 @@
   delete window.module;
 </script>
 
-<script type="text/javascript" src="js/lib/xzdec.js"></script>
-<script type="text/javascript" data-main="js/init.js" src="node_modules/requirejs/require.js"></script>
+<script type="text/javascript" src="../js/lib/xzdec.js"></script>
+<script type="text/javascript" data-main="../js/init.js" src="../node_modules/requirejs/require.js"></script>
 </body>
 </html>
