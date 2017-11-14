@@ -30,7 +30,8 @@
   "dependencies": {
     "electron-compile": "^6.4.2",
     "electron-squirrel-startup": "^1.0.0",
-    "requirejs": "^2.3.5"
+    "jquery": "^3.2.1",
+    "q": "^1.5.1"
   },
   "config": {
     "forge": {
@@ -47,7 +48,9 @@
         ]
       },
       "electronPackagerConfig": {
-        "ignore": [".idea"],
+        "ignore": [
+          ".idea"
+        ],
         "name": "SAFE Wiki",
         "appBundleId": "com.electron.safe-wiki",
         "appCategoryType": "public.app-category.education",

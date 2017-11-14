@@ -1,12 +1,3 @@
-import requirejs from "requirejs"
-
-requirejs.config({
-  //Pass the top-level main.js/index.js require
-  //function to requirejs so that node modules
-  //are loaded relative to the top-level JS file.
-  nodeRequire: require
-});
-
 const electron = require('electron')
 // Module to control application life.
 const app = electron.app
@@ -32,7 +23,7 @@ function createWindow () {
   }))
 
   // Open the DevTools.
-  // mainWindow.webContents.openDevTools()
+  mainWindow.webContents.openDevTools()
 
   // Emitted when the window is closed.
   mainWindow.on('closed', function () {
