@@ -33,6 +33,13 @@
     "jquery": "^3.2.1",
     "q": "^1.5.1"
   },
+  "standard": {
+    "ignore": [
+      "/js/lib/xzdec.js",
+      "/js/lib/bootstrap.js",
+      "/js/lib/cookies.js"
+    ]
+  },
   "config": {
     "forge": {
       "make_targets": {

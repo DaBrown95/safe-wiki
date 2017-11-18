@@ -10,28 +10,34 @@
   Kiwix (offline Wikipedia reader) - HTML5/Javascript version
   Home page : http://www.kiwix.org
 
-  Main authors of this application :
+  Main authors of Kiwix JS :
   Mossroy - mossroy@mossroy.fr
   Peter-x - https://github.com/peter-x
 
+  Main author of SAFE Wiki :
+  David Brown - https://github.com/DaBrown95
+
   Copyright 2013-2017 Mossroy, Peter-x and contributors
+  Copyright 2017 David Brown <david_a_brown@mac.com>
+
+  SAFE Wiki is a fork of the Kiwix JS project.
+  Kiwix JS is available here: <https://github.com/kiwix/kiwix-js>
+  All changes can be viewed here: <https://github.com/DaBrown95/safe-wiki>
+
   License GPL v3:
 
-  This file is part of Kiwix.
-
-  Kiwix is free software: you can redistribute it and/or modify
+  This program is free software: you can redistribute it and/or modify
   it under the terms of the GNU General Public License as published by
   the Free Software Foundation, either version 3 of the License, or
   (at your option) any later version.
 
-  Kiwix is distributed in the hope that it will be useful,
+  This program is distributed in the hope that it will be useful,
   but WITHOUT ANY WARRANTY; without even the implied warranty of
   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
   GNU General Public License for more details.
 
   You should have received a copy of the GNU General Public License
-  along with Kiwix (file LICENSE-GPLv3.txt).  If not, see <http://www.gnu.org/licenses/>
-
+  along with this program.  If not, see <http://www.gnu.org/licenses/>.
   -->
 
   <link rel="stylesheet" href="../css/app.css"/>
@@ -156,28 +162,28 @@
       </ul>
       <h3>License information</h3>
       Copyright 2013-2017 Mossroy, Peter-x and contributors
+      <br />Copyright 2017 David Brown
       <br />This application is licensed under the GPL v3 license :
       <br />
       <i>
-        <br />Kiwix is free software: you can redistribute it and/or modify
+        <br />This program is free software: you can redistribute it and/or modify
         <br />it under the terms of the GNU General Public License as published by
         <br />the Free Software Foundation, either version 3 of the License, or
         <br />(at your option) any later version.
         <br />
-        <br />Kiwix is distributed in the hope that it will be useful,
+        <br />This program is distributed in the hope that it will be useful,
         <br />but WITHOUT ANY WARRANTY; without even the implied warranty of
         <br />MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
         <br />GNU General Public License for more details.
         <br />
         <br />You should have received a copy of the GNU General Public License
-        <br />along with Kiwix (file LICENSE-GPLv3.txt).  If not, see <a href="http://www.gnu.org/licenses/">http://www.gnu.org/licenses/</a>
+        <br />along with this program.  If not, see <a href="http://www.gnu.org/licenses/">http://www.gnu.org/licenses/</a>
       </i>
       <br />
       <br />Main libraries and ressources used :
       <ul>
         <li><a href="http://jquery.com/" target="_blank">jQuery</a> 2, released under the <a href="http://jquery.org/license" target="_blank">MIT license</a></li>
         <li><a href="http://getbootstrap.com/" target="_blank">Bootstrap</a> 3, released under the <a href="http://www.apache.org/licenses/LICENSE-2.0" target="_blank">Apache license 2.0</a>, which includes icons from <a href="http://glyphicons.com/">Glyphicons</a></li>
-        <li><a href="http://www.requirejs.org/" target="_blank">RequireJS</a> 2, released under the <a href="https://github.com/jrburke/requirejs/blob/master/LICENSE" target="_blank">MIT license or new BSD license</a></li>
         <li><a href="http://qunitjs.com/" target="_blank">QUnit</a> 2, released under the <a href="http://jquery.org/license" target="_blank">MIT license</a></li>
         <li>Kiwix logo from <a href="http://www.kiwix.org/" target="_blank">kiwix.org</a>, released under the <a href="http://creativecommons.org/licenses/by-sa/3.0/" target="_blank">Creative Commons Attribution Share Alike</a></li>
         <li>OpenZIM specifications from <a href="http://www.openzim.org//wiki/OpenZIM" target="_blank">www.openzim.org</a>, released under the <a href="http://creativecommons.org/licenses/by-sa/3.0/" target="_blank">Creative Commons Attribution Share Alike</a></li>
@@ -249,10 +255,6 @@
 </section>
 
 <script>
-  //  window.nodeRequire = require;
-  //  delete window.require;
-  //  delete window.exports;
-  //  delete window.module;
   require('../js/app.js')
 </script>
 
