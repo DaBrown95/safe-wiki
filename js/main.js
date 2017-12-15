@@ -81,3 +81,12 @@ app.on('activate', function () {
 
 // In this file you can include the rest of your app's specific main process
 // code. You can also put them in separate files and require them here.
+
+const sendResponse = (success) => {
+  mainWindow.webContents.send('auth-response', success ? success : '');
+};
+
+app.on('open-url', function (e, url) {
+  console.log('open-url event triggered');
+  sendResponse(url);
+});
