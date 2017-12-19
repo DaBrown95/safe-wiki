@@ -83,10 +83,10 @@ app.on('activate', function () {
 // code. You can also put them in separate files and require them here.
 
 const sendResponse = (success) => {
-  mainWindow.webContents.send('auth-response', success ? success : '');
-};
+  mainWindow.webContents.send('auth-response', success ? success : '')
+}
 
 app.on('open-url', function (e, url) {
-  console.log('open-url event triggered');
-  sendResponse(url);
-});
+  console.log('open-url event triggered')
+  sendResponse(url)
+})

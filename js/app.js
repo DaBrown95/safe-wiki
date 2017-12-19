@@ -32,6 +32,8 @@ import uiUtil from './lib/uiUtil'
 import cookies from './lib/cookies'
 import abstractFilesystemAccess from './lib/abstractFilesystemAccess'
 import q from 'q'
+import safeApi from './safe/api'
+import { ipcRenderer as ipc } from 'electron'
 
 /**
  * Maximum number of articles to display in a search
@@ -1042,3 +1044,13 @@ function goToMainArticle () {
     }
   })
 }
+
+safeApi.requestAuth()
+
+ipc.on('auth-response', async (event, response) => {
+  await safeApi.connect(response)
+  console.log('Connected.')
+  safeApi.canAccessContainers().then(() => {
+    console.log('Could access containers!')
+  })
+})

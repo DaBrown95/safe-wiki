@@ -31,7 +31,7 @@
     "standard": "^10.0.3"
   },
   "dependencies": {
-    "@maidsafe/safe-node-app": "latest",
+    "@maidsafe/safe-node-app": "0.5.3",
     "electron": "latest",
     "electron-compile": "^6.4.2",
     "electron-squirrel-startup": "^1.0.0",
