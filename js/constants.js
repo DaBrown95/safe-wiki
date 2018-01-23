@@ -39,7 +39,7 @@ const CONSTANTS = {
       scope: null,
       name: pkg.productName,
       vendor: pkg.vendor,
-      customExecPath: isDevMode ? `${process.execPath} ${app.getAppPath()}` : app.getPath('exe')
+      customExecPath: [isDevMode ? `${process.execPath} ${app.getAppPath()}` : app.getPath('exe')]
     },
     opt: {
       own_container: false
@@ -77,6 +77,7 @@ const CONSTANTS = {
     PUBLIC_NAMES: '_publicNames'
   },
   TYPE_TAG: {
+    ZIM_FOLDER: 20010115,
     DNS: 15001,
     WWW: 15002
   },
