@@ -264,8 +264,32 @@
 
                 <button type="button" id="connectToSafe" class="btn btn-primary">Connect to network</button>
 
-                <span class="label label-success" id="safeNetworkSuccess" style="display: none;">Connected to the SAFE Network</span>
                 <span class="label label-warning" id="safeNetworkFailure">Not connected to the SAFE Network</span>
+                <span class="label label-success" id="safeNetworkSuccess" style="display: none;">Connected to the SAFE Network</span>
+
+                <span class="label label-warning" id="zimFolderNotExists">ZIM folder doesn't exist</span>
+                <span class="label label-success" id="zimFolderExists" style="display: none;">ZIM folder exists</span>
+
+                <div id="zimFolderCreation" style="display: none;">
+                    We will now create a folder for you to store ZIM files. The name you choose is important as this is
+                    what other users will use to find your zim files!
+                    <form id="createZimFolder">
+                        <div class="form-group">
+                            <label for="publicName">Public name: </label>
+                            <input type="text" class="form-control" id="publicName">
+                            <small class="form-text text-muted">This is important! It is what other users will use to
+                                read your ZIM files.
+                            </small>
+                        </div>
+                        <div class="form-group">
+                            <label for="description">Description:</label>
+                            <input type="text" class="form-control" id="description">
+                        </div>
+                        <button type="submit" class="btn btn-default">Create</button>
+                    </form>
+                </div>
+
+                <span class="label label-info" id="zimFolderName" style="display : none;">Name</span>
 
                 <div id="safeNetworkActivity" style="display: none;">
                     <br/> Waiting on the SAFE Network... <img src="../img/spinner.gif" alt="Please wait..."/>

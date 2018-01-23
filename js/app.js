@@ -1061,6 +1061,23 @@ ipc.on('auth-response', async (event, response) => {
   safeApi.canAccessContainers().then(() => {
     console.log('Could access containers!')
   })
+  safeApi.hasZimFolder().then((result) => {
+    if (result) {
+      $('#zimFolderCreation').hide()
+      $('#zimFolderExists').show()
+      $('#zimFolderNotExists').hide()
+    } else {
+      $('#zimFolderCreation').show()
+      $('#createZimFolder').on('submit', function () {
+        const zimFoldeNname = $('#publicName').val().trim()
+        const zimFolderDescription = $('#description').val().trim()
+
+        const zimFolderCreatedName = safeApi.createZimFolder(zimFoldeNname, zimFolderDescription)
+        $('#zimFolderName').val(zimFolderCreatedName)
+        $('#zimFolderCreation').hide()
+      })
+    }
+  })
   $('#safeNetworkSuccess').show()
   $('#safeNetworkFailure').hide()
 })
