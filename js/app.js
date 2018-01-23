@@ -419,6 +419,7 @@ if (storages !== null && storages.length > 0) {
 }
 else {
   // If DeviceStorage is not available, we display the file select components
+  displaySafeNetwork()
   displayFileSelect()
   if (document.getElementById('archiveFiles').files && document.getElementById('archiveFiles').files.length > 0) {
     // Archive files are already selected,
@@ -544,6 +545,14 @@ function setLocalArchiveFromArchiveList () {
     })
 
   }
+}
+
+function displaySafeNetwork () {
+  $('#safeNetworkConfiguration').show()
+  $('#connectToSafe').on('click', function () {
+    safeApi.requestAuth()
+    $('#safeNetworkActivity').show()
+  })
 }
 
 /**
@@ -1045,12 +1054,13 @@ function goToMainArticle () {
   })
 }
 
-safeApi.requestAuth()
-
 ipc.on('auth-response', async (event, response) => {
   await safeApi.connect(response)
+  $('#safeNetworkActivity').hide()
   console.log('Connected.')
   safeApi.canAccessContainers().then(() => {
     console.log('Could access containers!')
   })
+  $('#safeNetworkSuccess').show()
+  $('#safeNetworkFailure').hide()
 })
