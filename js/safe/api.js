@@ -76,6 +76,51 @@ class SafeApi extends Network {
   }
 
   /**
+   * Used to check if the user already has a zim folder.
+   * @returns {Promise<any>}
+   */
+  hasZimFolder () {
+    return new Promise(async (resolve, reject) => {
+      if (!this.app) {
+        return reject(makeError(CONSTANTS.APP_ERR_CODE.APP_NOT_INITIALISED,
+          'Application not initialised'))
+      }
+      try {
+        const publicContainer = await this.getPublicContainer()
+        await publicContainer.get('zim')
+        resolve(true)
+      } catch (err) {
+        resolve(false)
+      }
+    })
+  }
+
+  /**
+   * Creates a folder inside the users public container. This folder has the key 'zim' and its value is that
+   * of a public MD that will be used with NFS emulation to contain zim files. The name of this MD is used to allow
+   * another user to access the ZIM files.
+   *
+   * @param zimFolderName the publicly known 'name' of this colleciton of zim files.
+   * @param description a description that can be presented to the user or for other purposes.
+   * @returns {Promise<any>}
+   */
+  createZimFolder (zimFolderName, description) {
+    return new Promise(async (resolve, reject) => {
+      try {
+        const hashedName = await this.sha3Hash(zimFolderName)
+        const zimFolder = await this.app.mutableData.newPublic(hashedName, CONSTANTS.TYPE_TAG.ZIM_FOLDER)
+        await zimFolder.quickSetup({}, zimFolderName, description)
+        const zimFolderInfo = await zimFolder.getNameAndTag()
+        const publicContainer = await this.getPublicContainer()
+        await this._insertToMData(publicContainer, 'zim', zimFolderInfo.name)
+        resolve(zimFolderInfo.name)
+      } catch (error) {
+        reject(error)
+      }
+    })
+  }
+
+  /**
    * Create new Public Name
    * - Create new Public Mutable Data with sha3hash of publicName as its XORName
    * - Create new entry with publicName as key and XORName as its value
