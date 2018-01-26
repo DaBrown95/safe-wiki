@@ -262,6 +262,10 @@
                 This application can read/write ZIM files to the SAFE Network. Please see the about section for more
                 information.
 
+                <div id="safeNetworkActivity" style="display: none;">
+                    <br/> Waiting on the SAFE Network... <img src="../img/spinner.gif" alt="Please wait..."/>
+                </div>
+
                 <button type="button" id="connectToSafe" class="btn btn-primary">Connect to network</button>
 
                 <span class="label label-warning" id="safeNetworkFailure">Not connected to the SAFE Network</span>
@@ -289,11 +293,26 @@
                     </form>
                 </div>
 
+                <div id="zimFileUploader" style="display: none;">
+                    You can now upload a ZIM file to the network.
+                    <form id="zimFileUpload">
+                        <div class="form-group">
+                            <label for="zimFile">Public name: </label>
+                            <input type="file" class="form-control" id="zimFile" accept=".zim">
+                        </div>
+                        <div class="form-group">
+                            <label for="fileName">File name:</label>
+                            <input type="text" class="form-control" id="fileName">
+                            <small class="form-text text-muted">Name your file carefully, this is the human readable
+                                name that will show to users.
+                            </small>
+                        </div>
+                        <button type="submit" class="btn btn-default">Upload</button>
+                    </form>
+                </div>
+
                 <span class="label label-info" id="zimFolderName" style="display : none;">Name</span>
 
-                <div id="safeNetworkActivity" style="display: none;">
-                    <br/> Waiting on the SAFE Network... <img src="../img/spinner.gif" alt="Please wait..."/>
-                </div>
             </div>
 
             <div id="openLocalFiles" style="display: none;">

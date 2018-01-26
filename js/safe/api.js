@@ -24,6 +24,7 @@
  */
 
 import Network from './network'
+import Uploader from './uploader'
 import makeError from './error'
 import CONSTANTS from '../constants'
 import { CONSTANTS as SAFE_CONSTANTS } from '@maidsafe/safe-node-app'
@@ -118,6 +119,17 @@ class SafeApi extends Network {
         reject(error)
       }
     })
+  }
+
+  /**
+   * Upload a zim file.
+   * @param {string} localPath to the zim file on the local machine
+   * @param {string} fileName human readable name of the file
+   */
+  fileUpload (localPath, fileName) {
+    console.log('Local path:' + localPath + ' File name: ' + fileName)
+    this[_uploader] = new Uploader(this, localPath, fileName)
+    this[_uploader].upload()
   }
 
   /**
@@ -668,6 +680,10 @@ class SafeApi extends Network {
         reject(err)
       }
     })
+  }
+
+  getZimFolderMD (xorName) {
+    return this.app.mutableData.newPublic(xorName, CONSTANTS.TYPE_TAG.ZIM_FOLDER)
   }
 
   getServiceFolderMD (xorname) {

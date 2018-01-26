@@ -1066,13 +1066,24 @@ ipc.on('auth-response', async (event, response) => {
       $('#zimFolderCreation').hide()
       $('#zimFolderExists').show()
       $('#zimFolderNotExists').hide()
+      $('#zimFileUploader').show()
+      $('#zimFileUploader').on('submit', function (event) {
+        event.preventDefault()
+
+        const fileName = $('#fileName').val()
+        const filePath = $('#zimFile')[0].files[0].path
+        safeApi.fileUpload(filePath, fileName)
+
+      })
     } else {
       $('#zimFolderCreation').show()
-      $('#createZimFolder').on('submit', function () {
-        const zimFoldeNname = $('#publicName').val().trim()
+      $('#createZimFolder').on('submit', function (event) {
+        event.preventDefault()
+
+        const zimFolderName = $('#publicName').val().trim()
         const zimFolderDescription = $('#description').val().trim()
 
-        const zimFolderCreatedName = safeApi.createZimFolder(zimFoldeNname, zimFolderDescription)
+        const zimFolderCreatedName = safeApi.createZimFolder(zimFolderName, zimFolderDescription)
         $('#zimFolderName').val(zimFolderCreatedName)
         $('#zimFolderCreation').hide()
       })

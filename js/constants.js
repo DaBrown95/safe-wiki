@@ -93,7 +93,8 @@ const CONSTANTS = {
     LOW_BALANCE: -113,
     INVALID_SIGN_KEY_HANDLE: -1011,
     EMPTY_DIR: -1029
-  }
+  },
+  UPLOAD_CHUNK_SIZE: 1000000,
 }
 
 // OSX: Add bundle for electron in dev mode
