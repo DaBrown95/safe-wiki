@@ -25,6 +25,7 @@
  */
 
 import q from 'q'
+import safeApi from '../safe/api'
 
 /**
  * Utility function : return true if the given string ends with the suffix
@@ -205,6 +206,27 @@ function uint8ArrayToBase64 (byteArray) {
   return (r > 0 ? enc.slice(0, r - 3) : enc) + '==='.slice(r || 3)
 }
 
+// /**
+//  * Reads a Uint8Array from the given file starting at byte offset begin and
+//  * for given size.
+//  * @param {File} file
+//  * @param {Integer} begin
+//  * @param {Integer} size
+//  * @returns {Promise} Promise
+//  */
+// function readFileSlice (file, begin, size) {
+//   var deferred = q.defer()
+//   var reader = new FileReader()
+//   reader.onload = function (e) {
+//     deferred.resolve(new Uint8Array(e.target.result))
+//   }
+//   reader.onerror = reader.onabort = function (e) {
+//     deferred.reject(e)
+//   }
+//   reader.readAsArrayBuffer(file.slice(begin, begin + size))
+//   return deferred.promise
+// }
+
 /**
  * Reads a Uint8Array from the given file starting at byte offset begin and
  * for given size.
@@ -214,16 +236,16 @@ function uint8ArrayToBase64 (byteArray) {
  * @returns {Promise} Promise
  */
 function readFileSlice (file, begin, size) {
-  var deferred = q.defer()
-  var reader = new FileReader()
-  reader.onload = function (e) {
-    deferred.resolve(new Uint8Array(e.target.result))
-  }
-  reader.onerror = reader.onabort = function (e) {
-    deferred.reject(e)
-  }
-  reader.readAsArrayBuffer(file.slice(begin, begin + size))
-  return deferred.promise
+  console.log("Trying to read " + begin + " " + size)
+
+  return new Promise(async (resolve, reject) => {
+    try {
+      let data = await safeApi.readZim("", begin, size)
+      resolve(data)
+    } catch (error) {
+      reject(error)
+    }
+  })
 }
 
 /**

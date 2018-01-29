@@ -97,6 +97,43 @@ class SafeApi extends Network {
   }
 
   /**
+   * Reads the selected bytes from the specified file.
+   *
+   * @param fileName the name of the file within the users 'zim folder'
+   * @param begin start position
+   * @param size end position
+   * @returns {Promise<any>}
+   */
+  readZim(fileName, begin, size) {
+    fileName = "test"
+    return new Promise(async (resolve, reject) => {
+      try {
+        console.log("Getting public container...")
+        const publicContainer = await this.getPublicContainer()
+        console.log("Getting MD for key 'zim'...")
+        const zimFolderName = await publicContainer.get('zim')
+        console.log("Getting zim folder MD..." + zimFolderName.buf)
+        const zimFolder = await this.app.mutableData.newPublic(zimFolderName.buf, CONSTANTS.TYPE_TAG.ZIM_FOLDER)
+        console.log("zimFolder now looks like...")
+        console.log(await zimFolder.getKeys())
+        console.log("Emulating as NFS...")
+        const nfs = zimFolder.emulateAs('NFS')
+        console.log("Fetching..." + fileName)
+        let file = await nfs.fetch(fileName)
+        console.log("Opening file...")
+        file = await nfs.open(file, CONSTANTS.FILE_OPEN_MODE.OPEN_MODE_READ)
+        console.log("Reading...")
+        let data = await file.read(begin, size)
+        file.close()
+        resolve(data)
+      } catch (error) {
+        reject(error)
+      }
+    })
+  }
+
+
+  /**
    * Creates a folder inside the users public container. This folder has the key 'zim' and its value is that
    * of a public MD that will be used with NFS emulation to contain zim files. The name of this MD is used to allow
    * another user to access the ZIM files.
