@@ -2,7 +2,7 @@
  * api.js
  *
  * Copyright 2017 Maidsafe
- * Copyright 2017 David Brown <david_a_brown@mac.com>
+ * Copyright 2017-2018 David Brown <david_a_brown@mac.com>
  *
  * This file was originally part of the 'Web Hosting Manager' sample app.
  * https://github.com/maidsafe/safe_examples/tree/880a367bb6bdc0a61e33d0909e2089000148d0bd
@@ -99,13 +99,12 @@ class SafeApi extends Network {
   /**
    * Reads the selected bytes from the specified file.
    *
-   * @param fileName the name of the file within the users 'zim folder'
+   * @param filename the name of the file within the users 'zim folder'
    * @param begin start position
    * @param size end position
    * @returns {Promise<any>}
    */
-  readZim(fileName, begin, size) {
-    fileName = "test"
+  readZim (filename, begin, size) {
     return new Promise(async (resolve, reject) => {
       try {
         console.log("Getting public container...")
@@ -114,12 +113,10 @@ class SafeApi extends Network {
         const zimFolderName = await publicContainer.get('zim')
         console.log("Getting zim folder MD..." + zimFolderName.buf)
         const zimFolder = await this.app.mutableData.newPublic(zimFolderName.buf, CONSTANTS.TYPE_TAG.ZIM_FOLDER)
-        console.log("zimFolder now looks like...")
-        console.log(await zimFolder.getKeys())
         console.log("Emulating as NFS...")
         const nfs = zimFolder.emulateAs('NFS')
-        console.log("Fetching..." + fileName)
-        let file = await nfs.fetch(fileName)
+        console.log('Fetching...' + filename)
+        let file = await nfs.fetch(filename)
         console.log("Opening file...")
         file = await nfs.open(file, CONSTANTS.FILE_OPEN_MODE.OPEN_MODE_READ)
         console.log("Reading...")
@@ -132,6 +129,31 @@ class SafeApi extends Network {
     })
   }
 
+  /**
+   * Used to retrieve the size of the specified zim file.
+   *
+   * @param zimFolder the MD that houses the zim file
+   * @param filename the nfs name of the file
+   * @returns {Promise<any>}
+   */
+  getFileSize (zimFolder, filename) {
+    return new Promise(async (resolve, reject) => {
+      try {
+        const publicContainer = await this.getPublicContainer()
+        const zimFolderName = await publicContainer.get('zim')
+        console.log('Getting zim folder MD...' + zimFolderName.buf)
+        const zimFolder = await this.app.mutableData.newPublic(zimFolderName.buf, CONSTANTS.TYPE_TAG.ZIM_FOLDER)
+        console.log('Emulating as NFS...')
+        const nfs = zimFolder.emulateAs('NFS')
+        let file = await nfs.fetch(filename)
+        let fileSize = await file.size()
+        console.log('File size: ' + fileSize)
+        resolve(fileSize)
+      } catch (error) {
+        reject(error)
+      }
+    })
+  }
 
   /**
    * Creates a folder inside the users public container. This folder has the key 'zim' and its value is that

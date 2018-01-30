@@ -2,7 +2,7 @@
  * zimArchiveLoader.js: Functions to search and read ZIM archives.
  *
  * Copyright 2015 Mossroy and contributors
- * Copyright 2017 David Brown <david_a_brown@mac.com>
+ * Copyright 2017-2018 David Brown <david_a_brown@mac.com>
  *
  * SAFE Wiki is a fork of the Kiwix JS project.
  * Kiwix JS is available here: <https://github.com/kiwix/kiwix-js>
@@ -35,7 +35,7 @@ import jQuery from 'jquery'
  * @returns {ZIMArchive}
  */
 function loadArchiveFromDeviceStorage (storage, path, callback) {
-  return new zimArchive.ZIMArchive(storage, path, callback)
+  return new zimArchive.ZIMArchive(storage, path, callback, false)
 }
 
 /**
@@ -46,8 +46,19 @@ function loadArchiveFromDeviceStorage (storage, path, callback) {
  */
 function loadArchiveFromFiles (files, callback) {
   if (files.length >= 1) {
-    return new zimArchive.ZIMArchive(files, null, callback)
+    return new zimArchive.ZIMArchive(files, null, callback, false)
   }
+}
+
+/**
+ * Create a ZIMArchive from the SAFE Network
+ * @param zimFolder the name of the MD that houses the target ZIM file
+ * @param fileName the name of the zim file the user wants to access
+ * @param callback
+ * @returns {ZIMArchive}
+ */
+function loadArchiveFromSafeNetwork (zimFolder, fileName, callback) {
+  return new zimArchive.ZIMArchive(zimFolder, fileName, callback, true)
 }
 
 /**
@@ -88,5 +99,6 @@ function scanForArchives (storages, callbackFunction) {
 export default {
   loadArchiveFromDeviceStorage: loadArchiveFromDeviceStorage,
   loadArchiveFromFiles: loadArchiveFromFiles,
+  loadArchiveFromSafeNetwork: loadArchiveFromSafeNetwork,
   scanForArchives: scanForArchives
 }

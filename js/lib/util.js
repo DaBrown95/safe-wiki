@@ -2,7 +2,7 @@
  * util.js : Utility functions
  *
  * Copyright 2013-2014 Mossroy and contributors
- * Copyright 2017 David Brown <david_a_brown@mac.com>
+ * Copyright 2017-2018 David Brown <david_a_brown@mac.com>
  *
  * SAFE Wiki is a fork of the Kiwix JS project.
  * Kiwix JS is available here: <https://github.com/kiwix/kiwix-js>
@@ -206,27 +206,6 @@ function uint8ArrayToBase64 (byteArray) {
   return (r > 0 ? enc.slice(0, r - 3) : enc) + '==='.slice(r || 3)
 }
 
-// /**
-//  * Reads a Uint8Array from the given file starting at byte offset begin and
-//  * for given size.
-//  * @param {File} file
-//  * @param {Integer} begin
-//  * @param {Integer} size
-//  * @returns {Promise} Promise
-//  */
-// function readFileSlice (file, begin, size) {
-//   var deferred = q.defer()
-//   var reader = new FileReader()
-//   reader.onload = function (e) {
-//     deferred.resolve(new Uint8Array(e.target.result))
-//   }
-//   reader.onerror = reader.onabort = function (e) {
-//     deferred.reject(e)
-//   }
-//   reader.readAsArrayBuffer(file.slice(begin, begin + size))
-//   return deferred.promise
-// }
-
 /**
  * Reads a Uint8Array from the given file starting at byte offset begin and
  * for given size.
@@ -236,16 +215,59 @@ function uint8ArrayToBase64 (byteArray) {
  * @returns {Promise} Promise
  */
 function readFileSlice (file, begin, size) {
-  console.log("Trying to read " + begin + " " + size)
+  var deferred = q.defer()
+  var reader = new FileReader()
+  reader.onload = function (e) {
+    deferred.resolve(new Uint8Array(e.target.result))
+  }
+  reader.onerror = reader.onabort = function (e) {
+    deferred.reject(e)
+  }
+  reader.readAsArrayBuffer(file.slice(begin, begin + size))
+  return deferred.promise
+}
+
+/**
+ * Reads a Uint8Array from the specified zim file that is hosted on the SAFE Network. Starting at byte offset begin and
+ * for a given size.
+ *
+ * @param zimFolder the MD that houses the zim file
+ * @param filename the nfs name of the zim file
+ * @param begin
+ * @param size
+ * @returns {Promise<any>}
+ */
+function readSafeFileSlice (zimFolder, filename, begin, size) {
+  console.log('Going to read ' + filename + ' in ' + zimFolder + ' from ' + begin + ' to ' + size)
 
   return new Promise(async (resolve, reject) => {
     try {
-      let data = await safeApi.readZim("", begin, size)
+      let data = await safeApi.readZim(filename, begin, size)
       resolve(data)
     } catch (error) {
       reject(error)
     }
   })
+}
+
+/**
+ * Used to retrieve the file size of the specified zim file.
+ *
+ * @param zimFolder the MD that houses the zim file
+ * @param filename the nfs name of the zim file
+ * @returns {Promise<any>}
+ */
+function getSafeFileSize (zimFolder, filename) {
+  console.log('Getting file size of: ' + filename)
+  return new Promise(async (resolve, reject) => {
+    try {
+      let fileSize = await safeApi.getFileSize(zimFolder, filename)
+      resolve(fileSize)
+    } catch (error) {
+      reject(error)
+    }
+  })
+
 }
 
 /**
@@ -349,6 +371,8 @@ export default {
   uint8ArrayToHex: uint8ArrayToHex,
   uint8ArrayToBase64: uint8ArrayToBase64,
   readFileSlice: readFileSlice,
+  readSafeFileSlice: readSafeFileSlice,
+  getSafeFileSize: getSafeFileSize,
   binarySearch: binarySearch,
   b64toBlob: b64toBlob,
   uintToString: uintToString,

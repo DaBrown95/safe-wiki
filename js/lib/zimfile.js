@@ -2,7 +2,7 @@
  * zimfile.js: Low-level ZIM file reader.
  *
  * Copyright 2015 Mossroy and contributors
- * Copyright 2017 David Brown <david_a_brown@mac.com>
+ * Copyright 2017-2018 David Brown <david_a_brown@mac.com>
  *
  * SAFE Wiki is a fork of the Kiwix JS project.
  * Kiwix JS is available here: <https://github.com/kiwix/kiwix-js>
@@ -77,6 +77,17 @@ ZIMFile.prototype._readInteger = function (offset, size) {
 }
 
 /**
+ * Used to retrieve the file size. This is used to account for a file being on the SAFE Network.
+ */
+ZIMFile.prototype._fileSize = function (file) {
+  if (this.safe) {
+    return this.size
+  } else {
+    return this._files[file].size
+  }
+}
+
+/**
  *
  * @param {Integer} offset
  * @param {Integer} size
@@ -85,12 +96,16 @@ ZIMFile.prototype._readInteger = function (offset, size) {
 ZIMFile.prototype._readSlice = function (offset, size) {
   var readRequests = []
   var currentOffset = 0
-  for (var i = 0; i < this._files.length; currentOffset += this._files[i].size, ++i) {
-    var currentSize = this._files[i].size
+  for (var i = 0; i < this._files.length; currentOffset += this._fileSize(i), ++i) {
+    var currentSize = this._fileSize(i)
     if (offset < currentOffset + currentSize && currentOffset < offset + size) {
       var readStart = Math.max(0, offset - currentOffset)
       var readSize = Math.min(currentSize, offset + size - currentOffset - readStart)
-      readRequests.push(util.readFileSlice(this._files[i], readStart, readSize))
+      if (this.safe) {
+        readRequests.push(util.readSafeFileSlice('test', this._files[i], readStart, readSize))
+      } else {
+        readRequests.push(util.readFileSlice(this._files[i], readStart, readSize))
+      }
     }
   }
   if (readRequests.length == 0) {
@@ -222,6 +237,7 @@ export default {
     })
     return util.readFileSlice(fileArray[0], 0, 80).then(function (header) {
       var zf = new ZIMFile(fileArray)
+      zf.safe = false
       zf.articleCount = readInt(header, 24, 4)
       zf.clusterCount = readInt(header, 28, 4)
       zf.urlPtrPos = readInt(header, 32, 8)
@@ -231,6 +247,34 @@ export default {
       zf.mainPage = readInt(header, 64, 4)
       zf.layoutPage = readInt(header, 68, 4)
       return zf
+    })
+  },
+  fromSafeNetwork: function (zimFolder, filename) {
+    return util.readSafeFileSlice(zimFolder, filename, 0, 80).then(function (header) {
+      var zf = new ZIMFile([filename])
+      zf.safe = true
+      zf.articleCount = readInt(header, 24, 4)
+      console.log('articleCount:' + zf.articleCount)
+      zf.clusterCount = readInt(header, 28, 4)
+      console.log('clusterCount:' + zf.clusterCount)
+      zf.urlPtrPos = readInt(header, 32, 8)
+      console.log('urlPtrPos:' + zf.urlPtrPos)
+      zf.titlePtrPos = readInt(header, 40, 8)
+      console.log('titlePtrPos:' + zf.titlePtrPos)
+      zf.clusterPtrPos = readInt(header, 48, 8)
+      console.log('clusterPtrPos:' + zf.clusterPtrPos)
+      zf.mimeListPos = readInt(header, 56, 8)
+      console.log('mimeListPos:' + zf.mimeListPos)
+      zf.mainPage = readInt(header, 64, 4)
+      console.log('mainPage:' + zf.mainPage)
+      zf.layoutPage = readInt(header, 68, 4)
+      console.log('layoutPage:' + zf.layoutPage)
+      return util.getSafeFileSize(zimFolder, filename).then((size) => {
+        zf.size = size
+        console.log('size: ' + zf.size)
+        console.log('Successfully built ZIMFile from the SAFE Network.')
+        return zf
+      })
     })
   }
 }

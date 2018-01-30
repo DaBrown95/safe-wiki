@@ -2,7 +2,7 @@
  * zimArchive.js: Support for archives in ZIM format.
  *
  * Copyright 2015 Mossroy and contributors
- * Copyright 2017 David Brown <david_a_brown@mac.com>
+ * Copyright 2017-2018 David Brown <david_a_brown@mac.com>
  *
  * SAFE Wiki is a fork of the Kiwix JS project.
  * Kiwix JS is available here: <https://github.com/kiwix/kiwix-js>
@@ -50,39 +50,51 @@ import utf8 from './utf8'
  * @param {StorageFirefoxOS|Array.<Blob>} storage Storage (in this case, the path must be given) or Array of Files (path parameter must be omitted)
  * @param {String} path
  * @param {callbackZIMArchive} callbackReady
+ * @param safeNetwork
  */
-function ZIMArchive (storage, path, callbackReady) {
+function ZIMArchive (storage, path, callbackReady, safeNetwork) {
   var that = this
   that._file = null
   that._language = '' //@TODO
   var createZimfile = function (fileArray) {
-    zimfile.fromFileArray(fileArray).then(function (file) {
-      that._file = file
-      callbackReady(that)
-    })
-  }
-  if (storage && !path) {
-    var fileList = storage
-    // We need to convert the FileList into an Array
-    var fileArray = [].slice.call(fileList)
-    // The constructor has been called with an array of File/Blob parameter
-    createZimfile(fileArray)
-  }
-  else {
-    if (/.*zim..$/.test(path)) {
-      // splitted archive
-      that._searchArchiveParts(storage, path.slice(0, -2)).then(function (fileArray) {
-        createZimfile(fileArray)
-      }, function (error) {
-        alert('Error reading files in splitted archive ' + path + ': ' + error)
+    if (safeNetwork) {
+      zimfile.fromSafeNetwork(storage, path).then(function (file) {
+        that._file = file
+        callbackReady(that)
+      })
+    } else {
+      zimfile.fromFileArray(fileArray).then(function (file) {
+        that._file = file
+        callbackReady(that)
       })
     }
+  }
+  if (safeNetwork) {
+    createZimfile()
+  } else {
+    if (storage && !path) {
+      var fileList = storage
+      // We need to convert the FileList into an Array
+      var fileArray = [].slice.call(fileList)
+      // The constructor has been called with an array of File/Blob parameter
+      createZimfile(fileArray)
+    }
     else {
-      storage.get(path).then(function (file) {
-        createZimfile([file])
-      }, function (error) {
-        alert('Error reading ZIM file ' + path + ' : ' + error)
-      })
+      if (/.*zim..$/.test(path)) {
+        // splitted archive
+        that._searchArchiveParts(storage, path.slice(0, -2)).then(function (fileArray) {
+          createZimfile(fileArray)
+        }, function (error) {
+          alert('Error reading files in splitted archive ' + path + ': ' + error)
+        })
+      }
+      else {
+        storage.get(path).then(function (file) {
+          createZimfile([file])
+        }, function (error) {
+          alert('Error reading ZIM file ' + path + ' : ' + error)
+        })
+      }
     }
   }
 }

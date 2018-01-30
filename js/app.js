@@ -3,7 +3,7 @@
  * This file handles the interaction between the application and the user
  *
  * Copyright 2013-2014 Mossroy and contributors
- * Copyright 2017 David Brown <david_a_brown@mac.com>
+ * Copyright 2017-2018 David Brown <david_a_brown@mac.com>
  *
  * SAFE Wiki is a fork of the Kiwix JS project.
  * Kiwix JS is available here: <https://github.com/kiwix/kiwix-js>
@@ -419,7 +419,6 @@ if (storages !== null && storages.length > 0) {
 }
 else {
   // If DeviceStorage is not available, we display the file select components
-  displaySafeNetwork()
   displayFileSelect()
   if (document.getElementById('archiveFiles').files && document.getElementById('archiveFiles').files.length > 0) {
     // Archive files are already selected,
@@ -575,6 +574,12 @@ function setLocalArchiveFromFileList (files) {
  */
 function setLocalArchiveFromFileSelect () {
   setLocalArchiveFromFileList(document.getElementById('archiveFiles').files)
+}
+
+function setFileOnSafeNetwork (zimFolder, filename) {
+  selectedArchive = zimArchiveLoader.loadArchiveFromSafeNetwork(zimFolder, filename, function (archive) {
+    $('#btnHome').click()
+  })
 }
 
 /**
@@ -1054,6 +1059,55 @@ function goToMainArticle () {
   })
 }
 
+function showZimFileUploader () {
+  $('#zimFolderCreation').hide()
+  $('#zimFolderExists').show()
+  $('#zimFolderNotExists').hide()
+  $('#zimFileUploader').show()
+  $('#zimFileUploader').on('submit', function (event) {
+    event.preventDefault()
+
+    const fileName = $('#fileName').val()
+    const filePath = $('#zimFile')[0].files[0].path
+    safeApi.fileUpload(filePath, fileName)
+
+  })
+}
+
+function showZimFolderCreator () {
+  $('#zimFolderCreation').show()
+  $('#createZimFolder').on('submit', function (event) {
+    event.preventDefault()
+
+    const zimFolderName = $('#publicName').val().trim()
+    const zimFolderDescription = $('#description').val().trim()
+
+    const zimFolderCreatedName = safeApi.createZimFolder(zimFolderName, zimFolderDescription)
+    $('#zimFolderCreation').hide()
+  })
+}
+
+function showZimFileSelector () {
+  $('#zimFileSelector').show()
+  $('#openSafeZimFile').on('submit', function (event) {
+    event.preventDefault()
+    const zimFolderName = $('#nfsName').val().trim()
+    const zimFileName = $('#nfsFileName').val().trim()
+
+    setFileOnSafeNetwork(zimFolderName, zimFileName)
+  })
+}
+
+$('#safeNetworkConfigToggle').on('click', () => {
+  displaySafeNetwork()
+  $('#openLocalFiles').hide()
+})
+
+$('#defaultConfigToggle').on('click', () => {
+  displayFileSelect()
+  $('#safeNetworkConfiguration').hide()
+})
+
 ipc.on('auth-response', async (event, response) => {
   await safeApi.connect(response)
   $('#safeNetworkActivity').hide()
@@ -1062,32 +1116,8 @@ ipc.on('auth-response', async (event, response) => {
     console.log('Could access containers!')
   })
   safeApi.hasZimFolder().then((result) => {
-    if (result) {
-      $('#zimFolderCreation').hide()
-      $('#zimFolderExists').show()
-      $('#zimFolderNotExists').hide()
-      $('#zimFileUploader').show()
-      $('#zimFileUploader').on('submit', function (event) {
-        event.preventDefault()
-
-        const fileName = $('#fileName').val()
-        const filePath = $('#zimFile')[0].files[0].path
-        safeApi.fileUpload(filePath, fileName)
-
-      })
-    } else {
-      $('#zimFolderCreation').show()
-      $('#createZimFolder').on('submit', function (event) {
-        event.preventDefault()
-
-        const zimFolderName = $('#publicName').val().trim()
-        const zimFolderDescription = $('#description').val().trim()
-
-        const zimFolderCreatedName = safeApi.createZimFolder(zimFolderName, zimFolderDescription)
-        $('#zimFolderName').val(zimFolderCreatedName)
-        $('#zimFolderCreation').hide()
-      })
-    }
+    showZimFileSelector()
+    result ? showZimFileUploader() : showZimFolderCreator()
   })
   $('#safeNetworkSuccess').show()
   $('#safeNetworkFailure').hide()
