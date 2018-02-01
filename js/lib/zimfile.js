@@ -102,7 +102,7 @@ ZIMFile.prototype._readSlice = function (offset, size) {
       var readStart = Math.max(0, offset - currentOffset)
       var readSize = Math.min(currentSize, offset + size - currentOffset - readStart)
       if (this.safe) {
-        readRequests.push(util.readSafeFileSlice('test', this._files[i], readStart, readSize))
+        readRequests.push(util.readSafeFileSlice(this._files[0], this._files[1], readStart, readSize))
       } else {
         readRequests.push(util.readFileSlice(this._files[i], readStart, readSize))
       }
@@ -249,9 +249,9 @@ export default {
       return zf
     })
   },
-  fromSafeNetwork: function (zimFolder, filename) {
-    return util.readSafeFileSlice(zimFolder, filename, 0, 80).then(function (header) {
-      var zf = new ZIMFile([filename])
+  fromSafeNetwork: function (zimFolderName, filename) {
+    return util.readSafeFileSlice(zimFolderName, filename, 0, 80).then(function (header) {
+      var zf = new ZIMFile([zimFolderName, filename])
       zf.safe = true
       zf.articleCount = readInt(header, 24, 4)
       console.log('articleCount:' + zf.articleCount)
@@ -269,7 +269,7 @@ export default {
       console.log('mainPage:' + zf.mainPage)
       zf.layoutPage = readInt(header, 68, 4)
       console.log('layoutPage:' + zf.layoutPage)
-      return util.getSafeFileSize(zimFolder, filename).then((size) => {
+      return util.getSafeFileSize(zimFolderName, filename).then((size) => {
         zf.size = size
         console.log('size: ' + zf.size)
         console.log('Successfully built ZIMFile from the SAFE Network.')

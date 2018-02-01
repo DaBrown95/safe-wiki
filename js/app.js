@@ -576,8 +576,8 @@ function setLocalArchiveFromFileSelect () {
   setLocalArchiveFromFileList(document.getElementById('archiveFiles').files)
 }
 
-function setFileOnSafeNetwork (zimFolder, filename) {
-  selectedArchive = zimArchiveLoader.loadArchiveFromSafeNetwork(zimFolder, filename, function (archive) {
+function setFileOnSafeNetwork (zimFolderName, filename) {
+  selectedArchive = zimArchiveLoader.loadArchiveFromSafeNetwork(zimFolderName, filename, function (archive) {
     $('#btnHome').click()
   })
 }

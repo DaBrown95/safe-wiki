@@ -231,18 +231,18 @@ function readFileSlice (file, begin, size) {
  * Reads a Uint8Array from the specified zim file that is hosted on the SAFE Network. Starting at byte offset begin and
  * for a given size.
  *
- * @param zimFolder the MD that houses the zim file
+ * @param zimFolderName the un-hashed name of the target 'zim folder' MD
  * @param filename the nfs name of the zim file
  * @param begin
  * @param size
  * @returns {Promise<any>}
  */
-function readSafeFileSlice (zimFolder, filename, begin, size) {
-  console.log('Going to read ' + filename + ' in ' + zimFolder + ' from ' + begin + ' to ' + size)
+function readSafeFileSlice (zimFolderName, filename, begin, size) {
+  console.log('Going to read ' + filename + ' in ' + zimFolderName + ' from ' + begin + ' to ' + size)
 
   return new Promise(async (resolve, reject) => {
     try {
-      let data = await safeApi.readZim(filename, begin, size)
+      let data = await safeApi.readZim(zimFolderName, filename, begin, size)
       resolve(data)
     } catch (error) {
       reject(error)
@@ -253,15 +253,15 @@ function readSafeFileSlice (zimFolder, filename, begin, size) {
 /**
  * Used to retrieve the file size of the specified zim file.
  *
- * @param zimFolder the MD that houses the zim file
+ * @param zimFolderName the un-hashed name of the target 'zim folder' MD
  * @param filename the nfs name of the zim file
  * @returns {Promise<any>}
  */
-function getSafeFileSize (zimFolder, filename) {
+function getSafeFileSize (zimFolderName, filename) {
   console.log('Getting file size of: ' + filename)
   return new Promise(async (resolve, reject) => {
     try {
-      let fileSize = await safeApi.getFileSize(zimFolder, filename)
+      let fileSize = await safeApi.getFileSize(zimFolderName, filename)
       resolve(fileSize)
     } catch (error) {
       reject(error)

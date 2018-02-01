@@ -99,20 +99,18 @@ class SafeApi extends Network {
   /**
    * Reads the selected bytes from the specified file.
    *
+   * @param zimFolderName the un-hashed name of the target 'zim folder' MD
    * @param filename the name of the file within the users 'zim folder'
    * @param begin start position
    * @param size end position
    * @returns {Promise<any>}
    */
-  readZim (filename, begin, size) {
+  readZim (zimFolderName, filename, begin, size) {
     return new Promise(async (resolve, reject) => {
       try {
-        console.log("Getting public container...")
-        const publicContainer = await this.getPublicContainer()
-        console.log("Getting MD for key 'zim'...")
-        const zimFolderName = await publicContainer.get('zim')
-        console.log("Getting zim folder MD..." + zimFolderName.buf)
-        const zimFolder = await this.app.mutableData.newPublic(zimFolderName.buf, CONSTANTS.TYPE_TAG.ZIM_FOLDER)
+        console.log('Getting ' + zimFolderName + ' zim folder...')
+        const hashedName = await this.sha3Hash(zimFolderName)
+        const zimFolder = await this.app.mutableData.newPublic(hashedName, CONSTANTS.TYPE_TAG.ZIM_FOLDER)
         console.log("Emulating as NFS...")
         const nfs = zimFolder.emulateAs('NFS')
         console.log('Fetching...' + filename)
@@ -132,17 +130,16 @@ class SafeApi extends Network {
   /**
    * Used to retrieve the size of the specified zim file.
    *
-   * @param zimFolder the MD that houses the zim file
+   * @param zimFolderName the un-hashed name of the target 'zim folder' MD
    * @param filename the nfs name of the file
    * @returns {Promise<any>}
    */
-  getFileSize (zimFolder, filename) {
+  getFileSize (zimFolderName, filename) {
     return new Promise(async (resolve, reject) => {
       try {
-        const publicContainer = await this.getPublicContainer()
-        const zimFolderName = await publicContainer.get('zim')
-        console.log('Getting zim folder MD...' + zimFolderName.buf)
-        const zimFolder = await this.app.mutableData.newPublic(zimFolderName.buf, CONSTANTS.TYPE_TAG.ZIM_FOLDER)
+        console.log('Getting ' + zimFolderName + ' zim folder...')
+        const hashedName = await this.sha3Hash(zimFolderName)
+        const zimFolder = await this.app.mutableData.newPublic(hashedName, CONSTANTS.TYPE_TAG.ZIM_FOLDER)
         console.log('Emulating as NFS...')
         const nfs = zimFolder.emulateAs('NFS')
         let file = await nfs.fetch(filename)

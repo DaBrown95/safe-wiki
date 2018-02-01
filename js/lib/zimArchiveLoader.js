@@ -52,13 +52,13 @@ function loadArchiveFromFiles (files, callback) {
 
 /**
  * Create a ZIMArchive from the SAFE Network
- * @param zimFolder the name of the MD that houses the target ZIM file
+ * @param zimFolderName the un-hashed name of the target 'zim folder' MD
  * @param fileName the name of the zim file the user wants to access
  * @param callback
  * @returns {ZIMArchive}
  */
-function loadArchiveFromSafeNetwork (zimFolder, fileName, callback) {
-  return new zimArchive.ZIMArchive(zimFolder, fileName, callback, true)
+function loadArchiveFromSafeNetwork (zimFolderName, fileName, callback) {
+  return new zimArchive.ZIMArchive(zimFolderName, fileName, callback, true)
 }
 
 /**
