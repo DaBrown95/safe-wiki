@@ -111,13 +111,13 @@ class SafeApi extends Network {
         console.log('Getting ' + zimFolderName + ' zim folder...')
         const hashedName = await this.sha3Hash(zimFolderName)
         const zimFolder = await this.app.mutableData.newPublic(hashedName, CONSTANTS.TYPE_TAG.ZIM_FOLDER)
-        console.log("Emulating as NFS...")
+        console.log('Emulating as NFS...')
         const nfs = zimFolder.emulateAs('NFS')
         console.log('Fetching...' + filename)
         let file = await nfs.fetch(filename)
-        console.log("Opening file...")
+        console.log('Opening file...')
         file = await nfs.open(file, CONSTANTS.FILE_OPEN_MODE.OPEN_MODE_READ)
-        console.log("Reading...")
+        console.log('Reading...')
         let data = await file.read(begin, size)
         file.close()
         resolve(data)
@@ -186,6 +186,26 @@ class SafeApi extends Network {
     console.log('Local path:' + localPath + ' File name: ' + fileName)
     this[_uploader] = new Uploader(this, localPath, fileName)
     this[_uploader].upload()
+  }
+
+  /**
+   * Deletes the target zim file from the users 'zim folder'.
+   *
+   * @param fileName the name of the zim file
+   * @returns {Promise<any>}
+   */
+  deleteZimFile (fileName) {
+    return new Promise(async (resolve, reject) => {
+      try {
+        const publicContainer = await this.getPublicContainer()
+        const zimFolderName = await this.getMDataValueForKey(publicContainer, 'zim')
+        const zimFolder = await this.getZimFolderMD(zimFolderName)
+        await this._removeFromMData(zimFolder, fileName)
+        resolve(true)
+      } catch (error) {
+        reject(error)
+      }
+    })
   }
 
   /**

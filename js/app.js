@@ -1060,6 +1060,7 @@ function goToMainArticle () {
 }
 
 function showZimFileUploader () {
+  showZimFileDeletion()
   $('#zimFolderCreation').hide()
   $('#zimFolderExists').show()
   $('#zimFolderNotExists').hide()
@@ -1095,6 +1096,22 @@ function showZimFileSelector () {
     const zimFileName = $('#nfsFileName').val().trim()
 
     setFileOnSafeNetwork(zimFolderName, zimFileName)
+  })
+}
+
+function showZimFileDeletion () {
+  $('#zimFileDeletion').show()
+  $('#zimFileDelete').on('submit', function (event) {
+    event.preventDefault()
+    $('#safeNetworkActivity').show()
+    $('#zimFileDeletion').hide()
+
+    const zimFileName = $('#fileNameForDelete').val().trim()
+    safeApi.deleteZimFile(zimFileName).then(() => {
+      $('#safeNetworkActivity').hide()
+      $('#zimFileDeletion').show()
+      alert(zimFileName + ' was successfully deleted.')
+    })
   })
 }
 
