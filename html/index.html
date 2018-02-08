@@ -10,7 +10,7 @@
     Kiwix (offline Wikipedia reader) - HTML5/Javascript version
     Home page : http://www.kiwix.org
 
-    Main authors of Kiwix JS :
+    Main authors of this application :
     Mossroy - mossroy@mossroy.fr
     Peter-x - https://github.com/peter-x
 
@@ -123,11 +123,11 @@
             <h4>Step 1 : download some content</h4>
             from <a href="http://download.kiwix.org/zim" target="_blank">http://download.kiwix.org/zim/</a>, with a
             regular computer.
-            <strong>Currently only Wikimedia contents (ZIM files in wiki* subdirectories, for instance <a
+            <strong>Currently only Mediawiki-based contents (ZIM files in wiki* subdirectories, for instance <a
                     href="http://download.kiwix.org/zim/wikipedia/" target="_blank">http://download.kiwix.org/zim/wikipedia/</a>)
+                and StackExchange (<a href="https://download.kiwix.org/zim/stack_exchange/" target="_blank">https://download.kiwix.org/zim/stack_exchange/</a>)
                 have been tested</strong>.
-            There are known bugs when reading other contents; and audio/video/dynamic contents are not supported for
-            now.
+            Audio/video/dynamic contents are not supported for now.
             <br/>For a quick test, you can start with the <a
                 href="http://download.kiwix.org/zim/wikipedia/wikipedia_en_ray_charles_2015-06.zim" target="_blank">"Ray
             Charles" ZIM file</a> : it contains some wikipedia articles about Ray Charles.
@@ -150,28 +150,7 @@
             your 3G and Wifi access before using the application.
             <br/>This application only reads the archive files of your device : it does not read any other files.
             <h3>Feedback / helping / contributing</h3>
-            This application is still a work in progress. There are many bugs and improvements that need to be done. In
-            particular :
-            <ul>
-                <li><a href="https://github.com/kiwix/kiwix-js/issues/114" target="_blank">Issue #114</a> : Add a way to
-                    easily download ZIM files directly to the device
-                </li>
-                <li><a href="https://github.com/kiwix/kiwix-js/issues/13" target="_blank">Issue #13</a> : All the user
-                    interface is in English : I plan to translate it at least in French. If you feel able to translate
-                    it in your language, please contact me
-                </li>
-                <li><a href="https://github.com/kiwix/kiwix-js/issues/172" target="_blank">Issue #172</a> and <a
-                        href="https://github.com/kiwix/kiwix-js/issues/152" target="_blank">#152</a> : Handle video and
-                    javascript content
-                </li>
-                <li><a href="https://github.com/kiwix/kiwix-js/issues/126" target="_blank">Issue #126</a> : Load the
-                    welcome page at first startup
-                </li>
-                <li><a href="https://github.com/kiwix/kiwix-js/issues/117" target="_blank">Issue #117</a> : Better
-                    handle upper/lowercase and accents/diacritics in title search
-                </li>
-                <li>Performance improvements etc.</li>
-            </ul>
+            This application is still a work in progress. There are many bugs and improvements that need to be done.
             Suggestions and patches/pull requests are welcome : the source code is on <a
                 href="https://github.com/kiwix/kiwix-js" target="_blank">github</a>.
             The <a href="https://github.com/kiwix/kiwix-js/issues" target="_blank">bugtracker</a> is on github too. We
@@ -207,8 +186,8 @@
                 </li>
             </ul>
             <h3>License information</h3>
-            Copyright 2013-2017 Mossroy, Peter-x and contributors
-            <br/>Copyright 2017 David Brown
+            Copyright 2013-2018 Mossroy, Peter-x, Jaifroid, sharun-s and other contributors
+            <br> Copyright 2018
             <br/>This application is licensed under the GPL v3 license :
             <br/>
             <i>
@@ -228,11 +207,14 @@
             <br/>
             <br/>Main libraries and ressources used :
             <ul>
-                <li><a href="http://jquery.com/" target="_blank">jQuery</a> 2, released under the <a
+                <li><a href="http://jquery.com/" target="_blank">jQuery</a> 3, released under the <a
                         href="http://jquery.org/license" target="_blank">MIT license</a></li>
                 <li><a href="http://getbootstrap.com/" target="_blank">Bootstrap</a> 3, released under the <a
                         href="http://www.apache.org/licenses/LICENSE-2.0" target="_blank">Apache license 2.0</a>, which
                     includes icons from <a href="http://glyphicons.com/">Glyphicons</a></li>
+                <li><a href="http://www.requirejs.org/" target="_blank">RequireJS</a> 2, released under the <a
+                        href="https://github.com/jrburke/requirejs/blob/master/LICENSE" target="_blank">MIT license or
+                    new BSD license</a></li>
                 <li><a href="http://qunitjs.com/" target="_blank">QUnit</a> 2, released under the <a
                         href="http://jquery.org/license" target="_blank">MIT license</a></li>
                 <li>Kiwix logo from <a href="http://www.kiwix.org/" target="_blank">kiwix.org</a>, released under the <a
@@ -252,91 +234,182 @@
             <h3>Other platforms/versions</h3>
             Other Kiwix clients exist on various platforms. See the official site : <a href="http://www.kiwix.org/"
                                                                                        target="_blank">http://www.kiwix.org/</a>
+            <!-- We need to add a few lines else the bottom bar hides the last actual lines of text -->
+            <br/>
+            <br/>
+            <br/>
+            <br/>
         </div>
 
         <div id="configuration" style="display: none;" class="category-padding">
-            <h2>Configuration</h2>
 
-            <div class="btn-group" data-toggle="buttons">
-                <label class="btn btn-primary active">
-                    <input type="radio" name="options" id="defaultConfigToggle" autocomplete="off" checked> Default
-                </label>
-                <label class="btn btn-primary">
-                    <input type="radio" name="options" id="safeNetworkConfigToggle" autocomplete="off"> SAFE Network
-                </label>
+            <div class="container">
+                <div class="row">
+                    <div class="btn-group" data-toggle="buttons">
+                        <label class="btn btn-primary active">
+                            <input type="radio" name="options" id="defaultConfigToggle" autocomplete="off" checked>
+                            Default
+                        </label>
+                        <label class="btn btn-primary">
+                            <input type="radio" name="options" id="safeNetworkConfigToggle" autocomplete="off"> SAFE
+                            Network
+                        </label>
+                    </div>
+                </div>
             </div>
 
-            <div id="safeNetworkConfiguration" style="display: none;">
-                <h2>SAFE</h2>
-                This application can read/write ZIM files to the SAFE Network. Please see the about section for more
-                information.
+            <div class="container">
+                <div class="row">
+                    <div id="safeNetworkConfiguration" style="display: none;">
+                        <h2>SAFE</h2>
+                        <div class="column">
+                            This application can read/write ZIM files to the SAFE Network. Please see the about section
+                            for
+                            more
+                            information.
 
-                <div id="safeNetworkActivity" style="display: none;">
-                    <br/> Waiting on the SAFE Network... <img src="../img/spinner.gif" alt="Please wait..."/>
+                            <div id="safeNetworkActivity" style="display: none;">
+                                <br/> Waiting on the SAFE Network... <img src="../img/spinner.gif"
+                                                                          alt="Please wait..."/>
+                            </div>
+
+                            <button type="button" id="connectToSafe" class="btn btn-primary">Connect to network</button>
+
+                            <span class="label label-warning"
+                                  id="safeNetworkFailure">Not connected to the SAFE Network</span>
+                            <span class="label label-success" id="safeNetworkSuccess" style="display: none;">Connected to the SAFE Network</span>
+
+                            <span class="label label-warning" id="zimFolderNotExists">ZIM folder doesn't exist</span>
+                            <span class="label label-success" id="zimFolderExists"
+                                  style="display: none;">ZIM folder exists</span>
+
+                            <div id="zimFileSelector" style="display: none;">
+                                <h3>Select a ZIM file</h3>
+                                Please select a zim file from the SAFE Network.
+                                <form id="openSafeZimFile">
+                                    <div class="form-group">
+                                        <label for="nfsName">Collection name: </label>
+                                        <input type="text" class="form-control" id="nfsName">
+                                        <small class="form-text text-muted">This is the name of the zim folder.</small>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="nfsFileName">Filename: </label>
+                                        <input type="text" class="form-control" id="nfsFileName">
+                                    </div>
+                                    <button type="submit" class="btn btn-default">Load</button>
+                                </form>
+                            </div>
+
+                            <div id="zimFolderCreation" style="display: none;">
+                                <h3>Create your own ZIM folder</h3>
+                                We will now create a folder for you to store ZIM files. The name you choose is important
+                                as
+                                this is
+                                what other users will use to find your zim files!
+                                <form id="createZimFolder">
+                                    <div class="form-group">
+                                        <label for="publicName">Public name: </label>
+                                        <input type="text" class="form-control" id="publicName">
+                                        <small class="form-text text-muted">This is important! It is what other users
+                                            will
+                                            use to
+                                            read your ZIM files.
+                                        </small>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="description">Description:</label>
+                                        <input type="text" class="form-control" id="description">
+                                    </div>
+                                    <button type="submit" class="btn btn-default">Create</button>
+                                </form>
+                            </div>
+
+                            <div id="zimFileUploader" style="display: none;">
+                                <h3>Upload a ZIM file</h3>
+                                You can now upload a ZIM file to the network.
+                                <form id="zimFileUpload">
+                                    <div class="form-group">
+                                        <label for="zimFile">Public name: </label>
+                                        <input type="file" class="form-control" id="zimFile" accept=".zim">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="fileName">File name:</label>
+                                        <input type="text" class="form-control" id="fileName">
+                                        <small class="form-text text-muted">Name your file carefully, this is the human
+                                            readable
+                                            name that will show to users.
+                                        </small>
+                                    </div>
+                                    <button type="submit" class="btn btn-default">Upload</button>
+                                </form>
+                            </div>
+                        </div>
+
+                    </div>
                 </div>
+            </div>
 
-                <button type="button" id="connectToSafe" class="btn btn-primary">Connect to network</button>
-
-                <span class="label label-warning" id="safeNetworkFailure">Not connected to the SAFE Network</span>
-                <span class="label label-success" id="safeNetworkSuccess" style="display: none;">Connected to the SAFE Network</span>
-
-                <span class="label label-warning" id="zimFolderNotExists">ZIM folder doesn't exist</span>
-                <span class="label label-success" id="zimFolderExists" style="display: none;">ZIM folder exists</span>
-
-                <div id="zimFileSelector" style="display: none;">
-                    <h3>Select a ZIM file</h3>
-                    Please select a zim file from the SAFE Network.
-                    <form id="openSafeZimFile">
-                        <div class="form-group">
-                            <label for="nfsName">Collection name: </label>
-                            <input type="text" class="form-control" id="nfsName">
-                            <small class="form-text text-muted">This is the name of the zim folder.</small>
+            <div class="container">
+                <div class="row">
+                    <h2>Configuration</h2>
+                    <div class="column">
+                        This application needs a ZIM archive to work. If you did not download one yet, please see the
+                        About section
+                        <div id="openLocalFiles" style="display: none;">
+                            Please select the .zim file (or all the .zimaa, .zimab etc in case of a split ZIM file)<br/>
+                            <input type="file" id="archiveFiles" multiple class="btn"
+                                   accept=".zim,.dat,.idx,.txt,.zimaa,.zimab,.zimac,.zimad,.zimae,.zimaf,.zimag,.zimah,.zimai,.zimaj,.zimak,.zimal,.zimam,.ziman,.zimao,.zimap,.zimaq,.zimar,.zimas,.zimat,.zimau,.zimav,.zimaw,.zimax,.zimay,.zimaz,.zimba,.zimbb,.zimbc,.zimbd,.zimbe,.zimbf,.zimbg,.zimbh,.zimbi,.zimbj,.zimbk,.zimbl,.zimbm,.zimbn,.zimbo,.zimbp,.zimbq,.zimbr,.zimbs,.zimbt,.zimbu,.zimbv,.zimbw,.zimbx,.zimby,.zimbz"/><br/>
+                            <strong>Only Mediawiki-based (wiki*.zim* files, like wikipedia) and StackExchange contents
+                                have been tested</strong> for now. Audio/video/dynamic contents are not supported for
+                            now.<br/>
                         </div>
-                        <div class="form-group">
-                            <label for="nfsFileName">Filename: </label>
-                            <input type="text" class="form-control" id="nfsFileName">
+                        <div id="scanningForArchives" style="display: none;">
+                            <br/> Scanning for archives... Please wait <img src="../img/spinner.gif"
+                                                                            alt="Please wait..."/>
                         </div>
-                        <button type="submit" class="btn btn-default">Load</button>
-                    </form>
+                        <div id="chooseArchiveFromLocalStorage" style="display: none;">
+                            <br/> Please select the archive you want to use : <select id="archiveList"
+                                                                                      class="form-control"></select>
+                            <br/> Click <a id="btnRescanDeviceStorage">here</a> to rescan your SD Cards and internal
+                            memory
+                        </div>
+                    </div>
                 </div>
+            </div>
 
-                <div id="zimFolderCreation" style="display: none;">
-                    <h3>Create your own ZIM folder</h3>
-                    We will now create a folder for you to store ZIM files. The name you choose is important as this is
-                    what other users will use to find your zim files!
-                    <form id="createZimFolder">
-                        <div class="form-group">
-                            <label for="publicName">Public name: </label>
-                            <input type="text" class="form-control" id="publicName">
-                            <small class="form-text text-muted">This is important! It is what other users will use to
-                                read your ZIM files.
-                            </small>
+            <div class="container">
+                <div class="row">
+                    <h3>Expert settings</h3>
+                    <div class="column">
+                        <div class="panel panel-danger" id="contentInjectionModeDiv">
+                            <div class="panel-heading">Content injection mode</div>
+                            <div class="panel-body">
+                                Don't touch unless you know what you're doing!
+                                <div class="radio">
+                                    <label>
+                                        <input type="radio" name="contentInjectionMode" value="jquery"
+                                               id="jQueryModeRadio" checked>
+                                        <strong>JQuery</strong> (slow and memory hungry, but safer)
+                                    </label>
+                                </div>
+                                <div class="radio">
+                                    <label>
+                                        <input type="radio" name="contentInjectionMode" value="serviceworker"
+                                               id="serviceworkerModeRadio">
+                                        <strong>ServiceWorker</strong> (faster but unstable, and not supported by all
+                                        platforms)
+                                    </label>
+                                </div>
+                            </div>
                         </div>
-                        <div class="form-group">
-                            <label for="description">Description:</label>
-                            <input type="text" class="form-control" id="description">
+                        <div class="panel panel-info" id="apiStatusDiv">
+                            <div class="panel-heading">API Status</div>
+                            <div class="panel-body">
+                                <div id="serviceWorkerStatus"></div>
+                                <div id="messageChannelStatus"></div>
+                            </div>
                         </div>
-                        <button type="submit" class="btn btn-default">Create</button>
-                    </form>
-                </div>
-
-                <div id="zimFileUploader" style="display: none;">
-                    <h3>Upload a ZIM file</h3>
-                    You can now upload a ZIM file to the network.
-                    <form id="zimFileUpload">
-                        <div class="form-group">
-                            <label for="zimFile">Public name: </label>
-                            <input type="file" class="form-control" id="zimFile" accept=".zim">
-                        </div>
-                        <div class="form-group">
-                            <label for="fileName">File name:</label>
-                            <input type="text" class="form-control" id="fileName">
-                            <small class="form-text text-muted">Name your file carefully, this is the human readable
-                                name that will show to users.
-                            </small>
-                        </div>
-                        <button type="submit" class="btn btn-default">Upload</button>
-                    </form>
+                    </div>
                 </div>
 
                 <div id="zimFileDeletion" style="display: none;">
@@ -354,39 +427,7 @@
 
                 </div>
             </div>
-
-            <div id="openLocalFiles" style="display: none;">
-                <h2>Local</h2>
-                This application needs a ZIM archive to work. If you did not download one yet, please see the About
-                section
-                Please select the .zim file (or all the .zimaa, .zimab etc in case of a split ZIM file)<br/>
-                <input type="file" id="archiveFiles" multiple class="btn"
-                       accept=".zim,.dat,.idx,.txt,.zimaa,.zimab,.zimac,.zimad,.zimae,.zimaf,.zimag,.zimah,.zimai,.zimaj,.zimak,.zimal,.zimam,.ziman,.zimao,.zimap,.zimaq,.zimar,.zimas,.zimat,.zimau,.zimav,.zimaw,.zimax,.zimay,.zimaz,.zimba,.zimbb,.zimbc,.zimbd,.zimbe,.zimbf,.zimbg,.zimbh,.zimbi,.zimbj,.zimbk,.zimbl,.zimbm,.zimbn,.zimbo,.zimbp,.zimbq,.zimbr,.zimbs,.zimbt,.zimbu,.zimbv,.zimbw,.zimbx,.zimby,.zimbz"/><br/>
-                <strong>Only Wikimedia contents (wiki*.zim* files) have been tested</strong> for now. There are known
-                bugs on other contents, and audio/video/dynamic contents are not supported for now.<br/>
-            </div>
-            <div id="scanningForArchives" style="display: none;">
-                <br/> Scanning for archives... Please wait <img src="../img/spinner.gif" alt="Please wait..."/>
-            </div>
-            <div id="chooseArchiveFromLocalStorage" style="display: none;">
-                <br/> Please select the archive you want to use : <select id="archiveList"
-                                                                          class="form-control"></select>
-                <br/> Click <a id="btnRescanDeviceStorage">here</a> to rescan your SD Cards and internal memory
-            </div>
             <br/>
-            <h2>Expert settings</h2>
-            <div id="contentInjectionModeDiv">
-                Do not touch unless you know what you're doing. <br/>
-                Content injection mode : <br/>
-                <input type="radio" name="contentInjectionMode" value="jquery" id="jQueryModeRadio" checked><label
-                    for="jQueryModeRadio">JQuery</label> (slow and memory hungry, but safer)
-                <br>
-                <input type="radio" name="contentInjectionMode" value="serviceworker" id="serviceworkerModeRadio"><label
-                    for="serviceworkerModeRadio">ServiceWorker</label> (faster but unstable, and not supported by all
-                platforms. In particular, Firefox extensions do not allow ServiceWorkers for now)
-            </div>
-            <div id="serviceWorkerStatus"></div>
-            <div id="messageChannelStatus"></div>
             <br/>
         </div>
 
@@ -409,17 +450,13 @@
     </article>
     <footer>
         <div id="navigationButtons" class="btn-toolbar">
-            <!-- We need to restrict the size of this navbar,
-            to avoid the top button to be in the scrollbar area :
-            on a device, it can trigger a "page down" of the scrollbar -->
-            <div class="restrictedSize">
-                <a class="btn btn-lg pull-left" id="btnHomeBottom" title="Home"><span
-                        class="glyphicon glyphicon-home"></span></a>
+            <div class="btn-group btn-group-justified">
+                <a class="btn btn-lg" id="btnHomeBottom" title="Home"><span class="glyphicon glyphicon-home"></span></a>
                 <a class="btn btn-lg" id="btnBack" title="Back"><span
                         class="glyphicon glyphicon-circle-arrow-left"></span></a>
                 <a class="btn btn-lg" id="btnForward" title="Forward"><span
                         class="glyphicon glyphicon-circle-arrow-right"></span></a>
-                <a class="btn btn-lg pull-right" id="btnTop" title="Top" href="#top"><span
+                <a class="btn btn-lg" id="btnTop" title="Top" href="#top"><span
                         class="glyphicon glyphicon-arrow-up"></span></a>
             </div>
         </div>
