@@ -31,19 +31,29 @@ The goal of this project is to allow you to access educational content that is h
 
 To run SAFE Wiki, you will need:
 
-- [Node.js](https://nodejs.org) `v7.x`, I recommend using [NVM](https://github.com/creationix/nvm)
+- [Node.js](https://nodejs.org) `v8.x`, I recommend using [NVM](https://github.com/creationix/nvm)
 - [Yarn](https://yarnpkg.com/) package manager
-- [Electron](http://electron.atom.io/) `v1.7.9`
+- [Electron](http://electron.atom.io/)
 
 I reccomend installing Electron via:
 
-    $ yarn global add electron@1.7.9
+    $ yarn global add electron
     
 **Before doing any of the next steps**, as a bare minimum please run...
 
     $ yarn
     
-... from the top level folder of this project.
+... from the top level folder of this project. Please consult the **Mock Routing** section if you intend to use it!
+
+### Mock Routing
+
+Similar to other Node powered SAFE applications, if you wish to use mock routing then you need to set `NODE_ENV=dev`.
+
+    $ export NODE_ENV=dev
+    
+If you enter that command before running `yarn` you should be all set.
+    
+You could also choose to prefix each command with `NODE_ENV=dev` if you so desire.
 
 ### Run in development mode
 
