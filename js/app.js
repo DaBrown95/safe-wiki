@@ -1060,10 +1060,6 @@ function goToMainArticle () {
 }
 
 function showZimFileUploader () {
-  showZimFileDeletion()
-  $('#zimFolderCreation').hide()
-  $('#zimFolderExists').show()
-  $('#zimFolderNotExists').hide()
   $('#zimFileUploader').show()
   $('#zimFileUploader').on('submit', function (event) {
     event.preventDefault()
@@ -1076,15 +1072,27 @@ function showZimFileUploader () {
 }
 
 function showZimFolderCreator () {
-  $('#zimFolderCreation').show()
-  $('#createZimFolder').on('submit', function (event) {
-    event.preventDefault()
+  safeApi.hasZimFolder().then((result) => {
+    if (result) {
+      $('#zimFolderCreation').hide()
+      $('#zimFolderNotExists').hide()
+      $('#zimFolderExists').show()
+      showZimFileUploader()
+      showZimFileDeletion()
+    } else {
+      $('#zimFolderCreation').show()
+      $('#createZimFolder').on('submit', function (event) {
+        event.preventDefault()
 
-    const zimFolderName = $('#publicName').val().trim()
-    const zimFolderDescription = $('#description').val().trim()
+        const zimFolderName = $('#publicName').val().trim()
+        const zimFolderDescription = $('#description').val().trim()
 
-    const zimFolderCreatedName = safeApi.createZimFolder(zimFolderName, zimFolderDescription)
-    $('#zimFolderCreation').hide()
+        safeApi.createZimFolder(zimFolderName, zimFolderDescription).then(() => {
+            showZimFolderCreator()
+          }
+        )
+      })
+    }
   })
 }
 
@@ -1132,10 +1140,8 @@ ipc.on('auth-response', async (event, response) => {
   safeApi.canAccessContainers().then(() => {
     console.log('Could access containers!')
   })
-  safeApi.hasZimFolder().then((result) => {
-    showZimFileSelector()
-    result ? showZimFileUploader() : showZimFolderCreator()
-  })
+  showZimFileSelector()
+  showZimFolderCreator()
   $('#safeNetworkSuccess').show()
   $('#safeNetworkFailure').hide()
 })
