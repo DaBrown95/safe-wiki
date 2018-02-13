@@ -790,7 +790,7 @@ function handleMessageChannelMessage (event) {
           })
         }
       }
-      selectedArchive.getDirEntryByTitle(title).then(readFile).fail(function () {
+      selectedArchive.getDirEntryByTitle(title).then(readFile).catch(function () {
         messagePort.postMessage({'action': 'giveContent', 'title': title, 'content': new UInt8Array()})
       })
     }
@@ -900,7 +900,7 @@ function displayArticleInForm (dirEntry, htmlArticle) {
             // TODO : use the complete MIME-type of the image (as read from the ZIM file)
             uiUtil.feedNodeWithBlob(image, 'src', content, 'image')
           })
-        }).fail(function (e) {
+        }).catch(function (e) {
           console.error('could not find DirEntry for image:' + title, e)
         })
       }
@@ -939,7 +939,7 @@ function displayArticleInForm (dirEntry, htmlArticle) {
             }
             link.replaceWith(cssElement)
           })
-        }).fail(function (e) {
+        }).catch(function (e) {
           console.error('could not find DirEntry for CSS : ' + title, e)
         })
       }
@@ -963,7 +963,7 @@ function displayArticleInForm (dirEntry, htmlArticle) {
               // var jsContent = encodeURIComponent(util.uintToString(content));
               //script.attr("src", 'data:text/javascript;charset=UTF-8,' + jsContent);
             })
-        }).fail(function (e) {
+        }).catch(function (e) {
           console.error('could not find DirEntry for javascript : ' + title, e)
         })
       }
@@ -1014,7 +1014,7 @@ function goToArticle (title) {
       $('#articleContent').contents().find('body').html('')
       readArticle(dirEntry)
     }
-  }).fail(function () { alert('Error reading article with title ' + title) })
+  }).catch(function () { alert('Error reading article with title ' + title) })
 }
 
 function goToRandomArticle () {
