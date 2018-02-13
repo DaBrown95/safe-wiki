@@ -90,3 +90,20 @@ app.on('open-url', function (e, url) {
   console.log('open-url event triggered')
   sendResponse(url)
 })
+
+const shouldQuit = app.makeSingleInstance((commandLine, workingDirectory) => {
+  const uri = commandLine[commandLine.length - 1]
+  if (commandLine.length >= 2 && uri) {
+    sendResponse(uri)
+  }
+
+  // Someone tried to run a second instance, we should focus our window.
+  if (mainWindow) {
+    if (mainWindow.isMinimized()) mainWindow.restore()
+    mainWindow.focus()
+  }
+})
+
+if (shouldQuit) {
+  app.quit()
+}

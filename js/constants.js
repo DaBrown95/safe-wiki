@@ -39,7 +39,7 @@ const CONSTANTS = {
       scope: null,
       name: pkg.productName,
       vendor: pkg.vendor,
-      customExecPath: [isDevMode ? `${process.execPath} ${app.getAppPath()}` : app.getPath('exe')]
+      customExecPath: isDevMode ? [`${process.execPath}`, `${app.getAppPath()}`] : [app.getPath('exe')]
     },
     opt: {
       own_container: false
