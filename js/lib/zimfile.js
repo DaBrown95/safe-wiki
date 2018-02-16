@@ -250,30 +250,32 @@ export default {
     })
   },
   fromSafeNetwork: function (zimFolderName, filename) {
-    return util.readSafeFileSlice(zimFolderName, filename, 0, 80).then(function (header) {
-      var zf = new ZIMFile([zimFolderName, filename])
-      zf.safe = true
-      zf.articleCount = readInt(header, 24, 4)
-      console.log('articleCount:' + zf.articleCount)
-      zf.clusterCount = readInt(header, 28, 4)
-      console.log('clusterCount:' + zf.clusterCount)
-      zf.urlPtrPos = readInt(header, 32, 8)
-      console.log('urlPtrPos:' + zf.urlPtrPos)
-      zf.titlePtrPos = readInt(header, 40, 8)
-      console.log('titlePtrPos:' + zf.titlePtrPos)
-      zf.clusterPtrPos = readInt(header, 48, 8)
-      console.log('clusterPtrPos:' + zf.clusterPtrPos)
-      zf.mimeListPos = readInt(header, 56, 8)
-      console.log('mimeListPos:' + zf.mimeListPos)
-      zf.mainPage = readInt(header, 64, 4)
-      console.log('mainPage:' + zf.mainPage)
-      zf.layoutPage = readInt(header, 68, 4)
-      console.log('layoutPage:' + zf.layoutPage)
-      return util.getSafeFileSize(zimFolderName, filename).then((size) => {
-        zf.size = size
-        console.log('size: ' + zf.size)
-        console.log('Successfully built ZIMFile from the SAFE Network.')
-        return zf
+    return util.getZimFolder(zimFolderName).then((zimFolder) => {
+      return util.readSafeFileSlice(zimFolder, filename, 0, 80).then(function (header) {
+        var zf = new ZIMFile([zimFolder, filename])
+        zf.safe = true
+        zf.articleCount = readInt(header, 24, 4)
+        console.log('articleCount:' + zf.articleCount)
+        zf.clusterCount = readInt(header, 28, 4)
+        console.log('clusterCount:' + zf.clusterCount)
+        zf.urlPtrPos = readInt(header, 32, 8)
+        console.log('urlPtrPos:' + zf.urlPtrPos)
+        zf.titlePtrPos = readInt(header, 40, 8)
+        console.log('titlePtrPos:' + zf.titlePtrPos)
+        zf.clusterPtrPos = readInt(header, 48, 8)
+        console.log('clusterPtrPos:' + zf.clusterPtrPos)
+        zf.mimeListPos = readInt(header, 56, 8)
+        console.log('mimeListPos:' + zf.mimeListPos)
+        zf.mainPage = readInt(header, 64, 4)
+        console.log('mainPage:' + zf.mainPage)
+        zf.layoutPage = readInt(header, 68, 4)
+        console.log('layoutPage:' + zf.layoutPage)
+        return util.getSafeFileSize(zimFolder, filename).then((size) => {
+          zf.size = size
+          console.log('size: ' + zf.size)
+          console.log('Successfully built ZIMFile from the SAFE Network.')
+          return zf
+        })
       })
     })
   }
