@@ -537,12 +537,23 @@ function setLocalArchiveFromArchiveList () {
           + ' storages found with getDeviceStorages instead of 1')
       }
     }
+    resetCssCache()
     selectedArchive = zimArchiveLoader.loadArchiveFromDeviceStorage(selectedStorage, archiveDirectory, function (archive) {
       cookies.setItem('lastSelectedArchive', archiveDirectory, Infinity)
       // The archive is set : go back to home page to start searching
       $('#btnHome').click()
     })
 
+  }
+}
+
+/**
+ * Resets the CSS Cache (used only in jQuery mode)
+ */
+function resetCssCache () {
+  // Reset the cssCache. Must be done when archive changes.
+  if (cssCache) {
+    cssCache = new Map()
   }
 }
 
@@ -563,6 +574,7 @@ function displayFileSelect () {
 }
 
 function setLocalArchiveFromFileList (files) {
+  resetCssCache()
   selectedArchive = zimArchiveLoader.loadArchiveFromFiles(files, function (archive) {
     // The archive is set : go back to home page to start searching
     $('#btnHome').click()
@@ -577,6 +589,7 @@ function setLocalArchiveFromFileSelect () {
 }
 
 function setFileOnSafeNetwork (zimFolderName, filename) {
+  resetCssCache()
   selectedArchive = zimArchiveLoader.loadArchiveFromSafeNetwork(zimFolderName, filename, function (archive) {
     $('#btnHome').click()
   })
@@ -812,6 +825,10 @@ var regexpLocalAnchorHref = /^#/
 var regexpImageUrl = /^(?:\.\.\/|\/)+(I\/.*)$/
 var regexpMetadataUrl = /^(?:\.\.\/|\/)+(-\/.*)$/
 
+// Cache for CSS styles contained in ZIM.
+// It significantly speeds up subsequent page display. See kiwix-js issue #335
+var cssCache = new Map()
+
 /**
  * Display the the given HTML article in the web page,
  * and convert links to javascript calls
@@ -914,34 +931,23 @@ function displayArticleInForm (dirEntry, htmlArticle) {
       if (hrefMatch) {
         // It's a CSS file contained in the ZIM file
         var title = uiUtil.removeUrlParameters(decodeURIComponent(hrefMatch[1]))
-        selectedArchive.getDirEntryByTitle(title).then(function (dirEntry) {
-          selectedArchive.readBinaryFile(dirEntry, function (fileDirEntry, content) {
-            var cssContent = util.uintToString(content)
-            // For some reason, Firefox OS does not accept the syntax <link rel="stylesheet" href="data:text/css,...">
-            // So we replace the tag with a <style type="text/css">...</style>
-            // while copying some attributes of the original tag
-            // Cf http://jonraasch.com/blog/javascript-style-node
-            var cssElement = document.createElement('style')
-            cssElement.type = 'text/css'
-
-            if (cssElement.styleSheet) {
-              cssElement.styleSheet.cssText = cssContent
-            } else {
-              cssElement.appendChild(document.createTextNode(cssContent))
-            }
-            var mediaAttributeValue = link.attr('media')
-            if (mediaAttributeValue) {
-              cssElement.media = mediaAttributeValue
-            }
-            var disabledAttributeValue = link.attr('media')
-            if (disabledAttributeValue) {
-              cssElement.disabled = disabledAttributeValue
-            }
-            link.replaceWith(cssElement)
+        if (cssCache && cssCache.has(title)) {
+          var cssContent = cssCache.get(title)
+          uiUtil.replaceCSSLinkWithInlineCSS(link, cssContent)
+        } else {
+          selectedArchive.getDirEntryByTitle(title)
+            .then(function (dirEntry) {
+              return selectedArchive.readBinaryFile(dirEntry,
+                function (fileDirEntry, content) {
+                  var fullUrl = fileDirEntry.namespace + '/' + fileDirEntry.url
+                  var contentString = util.uintToString(content)
+                  if (cssCache) cssCache.set(fullUrl, contentString)
+                  uiUtil.replaceCSSLinkWithInlineCSS(link, contentString)
+                })
+            }).fail(function (e) {
+            console.error('could not find DirEntry for CSS : ' + title, e)
           })
-        }).catch(function (e) {
-          console.error('could not find DirEntry for CSS : ' + title, e)
-        })
+        }
       }
     })
 
