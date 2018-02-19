@@ -241,7 +241,7 @@ function readSafeFileSlice (zimFolder, filename, begin, size) {
   return new Promise(async (resolve, reject) => {
     try {
       let data = await safeApi.readZim(zimFolder, filename, begin, size)
-      console.log('Successfully read Uint8Array of size ' + size + ' from \'' + filename + '\' beginning at ' + size)
+      console.log('Successfully read Uint8Array of size ' + size + ' from \'' + filename + '\' beginning at ' + begin)
       resolve(data)
     } catch (error) {
       reject(error)
