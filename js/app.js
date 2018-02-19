@@ -944,7 +944,7 @@ function displayArticleInForm (dirEntry, htmlArticle) {
                   if (cssCache) cssCache.set(fullUrl, contentString)
                   uiUtil.replaceCSSLinkWithInlineCSS(link, contentString)
                 })
-            }).fail(function (e) {
+            }).catch(function (e) {
             console.error('could not find DirEntry for CSS : ' + title, e)
           })
         }
