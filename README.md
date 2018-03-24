@@ -6,9 +6,9 @@
 
 ### Attribution
 
-SAFE Wiki is based upon the efforts of the [Kiwix](http://www.kiwix.org/) project. More specifically [Kiwix JS](https://github.com/kiwix/kiwix-js), from which a large portion of SAFE Wiki is based upon. A big thank you to everyone who has contributed to the Kiwix Project 
+SAFE Wiki is based upon the efforts of the [Kiwix](http://www.kiwix.org/) project. More specifically [Kiwix JS](https://github.com/kiwix/kiwix-js), from which a large portion of SAFE Wiki is based upon. A big thank you to everyone who has contributed to the Kiwix Project.
 
-Please note that SAFE Wiki is not endorsed by or associated with the Kiwix projet.
+Please note that SAFE Wiki is not endorsed by or associated with the Kiwix project.
 
 ### The SAFE Network
 
@@ -19,13 +19,11 @@ The SAFE Network is a decentralized data storage and communications network that
 and low-cost infrastructure for everyone.
 `
 
-I will be updating this section in the future with further details that are relevant to this project and the SAFE Network. For now, I recommend browsing their website for a deeper understanding of the SAFE Network.
-
 ### SAFE Wiki
 
 The goal of this project is to allow you to access educational content that is hosted on a distributed, censorship resistant and [autonomous](https://blog.maidsafe.net/2017/10/07/autonomous-data-networks-and-why-the-world-needs-them/) network. Whether this be [Wikipedia](https://www.wikipedia.org), [WikiSpecies](https://species.wikimedia.org/wiki/Main_Page) or even [TED Talks](https://www.ted.com/). This would mean that even if you didn't have access to these resources (perhaps government censorship) as long as you have access to the SAFE Network you would be able to access them freely.
 
-
+SAFE Wiki facilitates the storage of [ZIM](http://www.openzim.org/wiki/OpenZIM) files on the SAFE Network. After a user uploads a ZIM file to the safe network any other user can browse that file. SAFE Wiki facilitates this while maintaining the full functionality of Kiwix JS.
 
 ## Installation
 
